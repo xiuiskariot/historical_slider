@@ -11,12 +11,7 @@ import useMediaQuery from "../../hooks/useMediaQuery";
 import { EventSwiperProps } from "../../types";
 import NavIcon from "../icons/NavIcon";
 
-
-const EventSwiper: FC<EventSwiperProps> = ({
-  activeIndex,
-  events,
-  onResize,
-}) => {
+const EventSwiper = ({ activeIndex, events, onResize }: EventSwiperProps) => {
   const swiperRef = useRef<SwiperRef | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const isMobile = useMediaQuery("(max-width: 799px)");

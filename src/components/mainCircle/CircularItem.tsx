@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 import gsap from "gsap";
 import { CircularItemProps } from "types";
-// import { CircularItemProps } from "types";
 
 
 export const CircularItem = ({

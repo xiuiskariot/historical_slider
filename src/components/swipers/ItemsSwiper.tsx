@@ -1,6 +1,5 @@
 import React, { FC, useEffect, useRef } from "react";
 import styled from "styled-components";
-
 import { Navigation, Pagination, EffectFade } from "swiper/types/modules";
 import {
   Swiper,
@@ -15,11 +14,11 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 
 import { ItemsSwiperProps } from "../../types";
-
 import EventSwiper from "./EventSwiper";
-
 import { useDebounce } from "hooks/useDebounce";
 import NavIcon from "components/icons/NavIcon";
+
+
 
 const ItemsSwiper: FC<ItemsSwiperProps> = (props) => {
   const { items, handleActiveChange, activeIndex, onResize } = props;

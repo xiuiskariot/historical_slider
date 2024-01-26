@@ -2,6 +2,48 @@ import React, { FC, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { DateSummaryProps, YearSpanProp } from "types";
 
+
+
+function YearSpan({ year, secondary = false }: YearSpanProp) {
+  const el = useRef<HTMLDivElement>(null);
+  return (
+    <DateSummaryYearSpan
+      $secondary={secondary}
+      className={`year-${secondary ? "max" : "min"}`}
+      ref={el}
+    >
+      {year}
+    </DateSummaryYearSpan>
+  );
+}
+
+const DateSummary: FC<DateSummaryProps> = ({
+  dataset,
+  activeIndex,
+  timeline,
+}) => {
+  const [yearList, setYearList] = useState<number[]>(
+    dataset[activeIndex].events.map((e) => +e.year)
+  );
+
+  useEffect(() => {
+    setYearList(dataset[activeIndex].events.map((e) => +e.year));
+  }, [dataset, activeIndex]);
+
+  return (
+    <Container>
+      <YearSpan timeline={timeline} year={Math.min(...yearList)} />
+      <YearSpan
+        timeline={timeline}
+        year={Math.max(...yearList)}
+        secondary={true}
+      />
+    </Container>
+  );
+};
+
+export default DateSummary;
+
 const Container = styled.div`
   flex-grow: 1;
   pointer-events: none;
@@ -61,43 +103,3 @@ const DateSummaryYearSpan = styled.span<{
     letter-spacing: -1.12px;
   }
 `;
-
-function YearSpan({ year, secondary = false }: YearSpanProp) {
-  const el = useRef<HTMLDivElement>(null);
-  return (
-    <DateSummaryYearSpan
-      $secondary={secondary}
-      className={`year-${secondary ? "max" : "min"}`}
-      ref={el}
-    >
-      {year}
-    </DateSummaryYearSpan>
-  );
-}
-
-const DateSummary: FC<DateSummaryProps> = ({
-  dataset,
-  activeIndex,
-  timeline,
-}) => {
-  const [yearList, setYearList] = useState<number[]>(
-    dataset[activeIndex].events.map((e) => +e.year)
-  );
-
-  useEffect(() => {
-    setYearList(dataset[activeIndex].events.map((e) => +e.year));
-  }, [dataset, activeIndex]);
-
-  return (
-    <Container>
-      <YearSpan timeline={timeline} year={Math.min(...yearList)} />
-      <YearSpan
-        timeline={timeline}
-        year={Math.max(...yearList)}
-        secondary={true}
-      />
-    </Container>
-  );
-};
-
-export default DateSummary;

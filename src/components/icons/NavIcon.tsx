@@ -3,28 +3,6 @@ import styled from "styled-components";
 import Icon from "./Icon";
 import { NavIconProps, SvgProps } from "types";
 
-const Svg = styled(Icon)<SvgProps>`
-  width: ${(props) => props.size ?? 50}px;
-  height: ${(props) => props.size ?? 50}px;
-  cursor: pointer;
-  filter: drop-shadow(0px 0px 15px var(--brand-color-icon-shadow));
-  &:hover {
-    fill: var(--brand-color-white);
-  }
-  circle {
-    stroke: ${(props) => props.$circleColor ?? "var(--brand-color-black-blue)"};
-    transition: transform 0.3s ease-in-out;
-  }
-  path {
-    stroke: ${(props) => props.$pathColor ?? "var(--brand-color-black-blue)"};
-    transform-origin: center center;
-    transition: transform 0.3s ease-in-out;
-  }
-  @media (max-width: 1024px) {
-    width: 25px;
-    height: 25px;
-  }
-`;
 
 const NavIcon = ({
   pathColor = "var(--brand-color-black-blue)",
@@ -62,3 +40,26 @@ const NavIcon = ({
 };
 
 export default NavIcon;
+
+const Svg = styled(Icon)<SvgProps>`
+  width: ${(props) => props.size ?? 50}px;
+  height: ${(props) => props.size ?? 50}px;
+  cursor: pointer;
+  filter: drop-shadow(0px 0px 15px var(--brand-color-icon-shadow));
+  &:hover {
+    fill: var(--brand-color-white);
+  }
+  circle {
+    stroke: ${(props) => props.$circleColor ?? "var(--brand-color-black-blue)"};
+    transition: transform 0.3s ease-in-out;
+  }
+  path {
+    stroke: ${(props) => props.$pathColor ?? "var(--brand-color-black-blue)"};
+    transform-origin: center center;
+    transition: transform 0.3s ease-in-out;
+  }
+  @media (max-width: 1024px) {
+    width: 25px;
+    height: 25px;
+  }
+`;

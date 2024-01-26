@@ -5,13 +5,11 @@ import { useGSAP } from "@gsap/react";
 import MotionPathPlugin from "gsap/MotionPathPlugin";
 
 import styled from "styled-components";
+import { CircularListProps } from "types";
 
 import useMediaQuery from "../../hooks/useMediaQuery";
 
 import { CircularItem } from "./CircularItem";
-
-
-import { CircularListProps } from "types";
 import DateSummary from "../summaries/Datesummary";
 import ItemsNavigation from "../navigation/ItemsNavigation";
 import EventSwiper from "../swipers/EventSwiper";

@@ -1,9 +1,38 @@
-import React, { FC } from "react";
+import React from "react";
 import styled from "styled-components";
-
 import { ItemsNavigationProps } from "types";
-
 import NavIcon from "../icons/NavIcon";
+
+const ItemsNavigation = ({
+  itemsLength,
+  activeIndex,
+  handleSetActive,
+}: ItemsNavigationProps) => {
+  return (
+    <Container id="items-navigation-wrapper">
+      <ActiveItemSummary>
+        {`${activeIndex + 1}`.padStart(2, "0")}/
+        {`${itemsLength}`.padStart(2, "0")}
+      </ActiveItemSummary>
+      <NavIcon
+        opposite={false}
+        id="items"
+        onClick={() =>
+          handleSetActive(activeIndex === 0 ? itemsLength - 1 : activeIndex - 1)
+        }
+      />
+      <NavIcon
+        opposite={true}
+        id="items"
+        onClick={() =>
+          handleSetActive(activeIndex === itemsLength - 1 ? 0 : activeIndex + 1)
+        }
+      />
+    </Container>
+  );
+};
+
+export default ItemsNavigation;
 
 const Container = styled.div`
   position: relative;
@@ -35,34 +64,3 @@ const ActiveItemSummary = styled.span`
   font-weight: 400;
   line-height: normal;
 `;
-
-const ItemsNavigation: FC<ItemsNavigationProps> = ({
-  itemsLength,
-  activeIndex,
-  handleSetActive,
-}) => {
-  return (
-    <Container id="items-navigation-wrapper">
-      <ActiveItemSummary>
-        {`${activeIndex + 1}`.padStart(2, "0")}/
-        {`${itemsLength}`.padStart(2, "0")}
-      </ActiveItemSummary>
-      <NavIcon
-        opposite={false}
-        id="items"
-        onClick={() =>
-          handleSetActive(activeIndex === 0 ? itemsLength - 1 : activeIndex - 1)
-        }
-      />
-      <NavIcon
-        opposite={true}
-        id="items"
-        onClick={() =>
-          handleSetActive(activeIndex === itemsLength - 1 ? 0 : activeIndex + 1)
-        }
-      />
-    </Container>
-  );
-};
-
-export default ItemsNavigation;
