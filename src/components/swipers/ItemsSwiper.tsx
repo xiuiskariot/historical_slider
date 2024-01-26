@@ -1,8 +1,13 @@
 import React, { FC, useEffect, useRef } from "react";
 import styled from "styled-components";
 
-import { Navigation, Pagination, EffectFade } from "swiper/modules";
-import { Swiper, SwiperClass, SwiperRef, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination, EffectFade } from "swiper/types/modules";
+import {
+  Swiper,
+  SwiperClass,
+  SwiperRef,
+  SwiperSlide,
+} from "swiper/swiper-react";
 import { PaginationOptions } from "swiper/types/modules/pagination";
 import "swiper/css";
 import "swiper/css/effect-fade";
@@ -11,10 +16,9 @@ import "swiper/css/pagination";
 
 import { ItemsSwiperProps } from "../../types";
 
-import { useDebounce } from "../../hooks/useDebounce";
 import EventSwiper from "./EventSwiper";
 import NavIcon from "icons/NavIcon";
-
+import { useDebounce } from "hooks/useDebounce";
 
 const ItemsSwiper: FC<ItemsSwiperProps> = (props) => {
   const { items, handleActiveChange, activeIndex, onResize } = props;
@@ -110,7 +114,6 @@ const ItemsSwiper: FC<ItemsSwiperProps> = (props) => {
 };
 
 export default ItemsSwiper;
-
 
 const Container = styled("div")`
   @media (max-width: 1024px) {

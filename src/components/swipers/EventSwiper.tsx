@@ -1,209 +1,206 @@
-import React, { FC, useEffect, useRef } from "react";
+import React, { FC, useRef } from "react";
 import styled from "styled-components";
 
-import { Navigation, Pagination, EffectFade } from "swiper/modules";
-import { Swiper, SwiperClass, SwiperRef, SwiperSlide } from "swiper/react";
-import { PaginationOptions } from "swiper/types/modules/pagination";
+import { Swiper, SwiperClass, SwiperRef, SwiperSlide } from "swiper/swiper-react";
+import { Navigation, Pagination } from "swiper/types/modules";
 import "swiper/css";
-import "swiper/css/effect-fade";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
-import { ItemsSwiperProps } from "../../types";
-
-import { useDebounce } from "../../hooks/useDebounce";
-import EventSwiper from "./EventSwiper";
+import useMediaQuery from "../../hooks/useMediaQuery";
+import { EventSwiperProps } from "../../types";
 import NavIcon from "icons/NavIcon";
 
-
-const CustomPagination = styled("div")`
-  color: var(--brand-color-black-blue);
-
-  font-family: "PT Sans";
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-`;
-const ItemsSwiper: FC<ItemsSwiperProps> = (props) => {
-  const { items, handleActiveChange, activeIndex, onResize } = props;
+const EventSwiper: FC<EventSwiperProps> = ({
+  activeIndex,
+  events,
+  onResize,
+}) => {
   const swiperRef = useRef<SwiperRef | null>(null);
-  console.table(props);
-  const handleResize = ({ realIndex, ...swiper }: SwiperClass) => {
-    onResize();
-  };
-  const debounceResize = useDebounce(handleResize, 600);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const isMobile = useMediaQuery("(max-width: 799px)");
 
-  const pagination: PaginationOptions = {
-    clickable: false,
-    type: "fraction",
-    el: ".items-pagination",
-    formatFractionCurrent: (number: number) => `${number}`.padStart(2, "0"),
-    formatFractionTotal: (number: number) => `${number}`.padStart(2, "0"),
+  const pagination = {
+    clickable: true,
   };
   const navigation = {
-    nextEl: ".items-swiper-button-next",
-    prevEl: ".items-swiper-button-prev",
+    nextEl: ".events-swiper-button-next",
+    prevEl: ".events-swiper-button-prev",
   };
-
-  useEffect(() => {
-    if (swiperRef.current) {
-      const swiperInstance = swiperRef.current.swiper;
-
-      if (activeIndex !== swiperInstance.activeIndex)
-        swiperInstance.slideTo(activeIndex);
-    }
-  }, [activeIndex]);
-
   return (
-    <Container id="items-swiper">
-      <NavBlock>
-        <CustomPagination className="items-pagination"></CustomPagination>
-        <div id="items-nav">
+    <Container
+      ref={containerRef}
+      $isMobile={isMobile}
+      id="event-swiper-container"
+    >
+      {!isMobile && (
+        <NavEL className="nav-element">
           <NavIcon
+            id="events"
             size={40}
             opposite={false}
-            id="items"
-            className={"items-swiper-button-prev"}
+            className={"swiper-button events-swiper-button-prev"}
+            fill={"var(--brand-color-white)"}
+            circleColor={"var(--brand-color-white)"}
           />
+        </NavEL>
+      )}
+      {events && (
+        <CustomSwiper
+          ref={swiperRef}
+          spaceBetween={0}
+          slidesPerView={"auto"}
+          pagination={pagination}
+          navigation={navigation}
+          observer={true}
+          onObserverUpdate={(swiper: SwiperClass) => swiper.setProgress(0)}
+          touchStartPreventDefault={true}
+          modules={[Pagination, Navigation]}
+          onResize={onResize}
+          breakpoints={{
+            319: {
+              spaceBetween: 0,
+            },
+            799: {
+              spaceBetween: 0,
+            },
+            1024: {
+              spaceBetween: 80,
+            },
+          }}
+        >
+          {events.map(({ year, content }, index) => {
+            return (
+              <SwiperSlideWrapper
+                key={
+                  index + activeIndex + content + year + new Date().getUTCDate()
+                }
+                onClick={() => console.log("click slide", index)}
+              >
+                <span>{year}</span> <p>{content}</p>
+              </SwiperSlideWrapper>
+            );
+          })}
+        </CustomSwiper>
+      )}
+      {!isMobile && (
+        <NavEL className="nav-element">
           <NavIcon
+            id="events"
             size={40}
             opposite={true}
-            id="items"
-            className={"items-swiper-button-next"}
+            className={"swiper-button events-swiper-button-next"}
+            fill={"var(--brand-color-white)"}
+            circleColor={"var(--brand-color-white)"}
           />
-        </div>
-      </NavBlock>
-
-      <CustomSwiper
-        ref={swiperRef}
-        spaceBetween={0}
-        slidesPerView={1}
-        speed={2000}
-        allowTouchMove={false}
-        onResize={debounceResize}
-        pagination={pagination}
-        navigation={navigation}
-        modules={[Pagination, Navigation, EffectFade]}
-        effect="fade"
-        virtualTranslate={true}
-        slidePrevClass="items-swapper-wrapper"
-
-        rewind={true}
-        fadeEffect={{
-          crossFade: true,
-        }}
-        onSlideChange={({ realIndex, ...swiper }: SwiperClass) => {
-          if (realIndex !== activeIndex) handleActiveChange(realIndex);
-        }}
-      >
-        {items.map((item, index) => {
-          return (
-            <SwiperSlideWrapper key={String(index) + new Date().toDateString()}>
-              {/* <h1>slide {index}</h1> */}
-              <EventSwiper
-                activeIndex={activeIndex}
-                events={item.events}
-                onResize={() => console.log("resize")}
-              />
-            </SwiperSlideWrapper>
-          );
-        })}
-      </CustomSwiper>
+        </NavEL>
+      )}
     </Container>
   );
 };
 
-export default ItemsSwiper;
-
-const Container = styled("div")`
-  @media (max-width: 1024px) {
-    flex-grow: 0;
-  }
-  @media (max-width: 768px) {
-    /* flex-grow:0.2; */
-  }
-`;
+export default EventSwiper;
 
 const CustomSwiper = styled(Swiper)`
-  overflow: visible;
   width: 100%;
-  height: 100%;
-  @media (min-width: 1024px) {
+  height: auto;
+  & > .swiper-wrapper {
+    z-index: 2;
+  }
+  @media (min-width: 799px) {
     .swiper-pagination {
       display: none;
     }
   }
   @media (max-width: 1024px) {
-    border-top: 1px solid black;
     padding: 0;
-    padding-bottom: 0px;
-    .swiper-pagination {
-      display: block;
-    }
     .swiper-button {
       display: none;
     }
+    .swiper-slide {
+      width: 60%;
+    }
   }
-  @media (max-width: 768px) {
-    padding-bottom: 0px;
-  }
-`;
-const SwiperSlideWrapper = styled(SwiperSlide)`
-  height: 295px;
-  @media (min-width: 1024px) {
-  }
-  @media (max-width: 1024px) {
-    height: 200px;
+  @media (max-width: 799px) {
+    width: 100%;
     padding: 0;
-
-    & > span {
-      font-size: 16px;
-    }
-    & > p {
-      font-size: 14px;
-    }
   }
-  @media (max-width: 768px) {
-    z-index: 10000;
+`;
+const Container = styled.div<{
+  $isMobile: boolean;
+}>`
+  margin: ${(props) => (props.$isMobile ? " 0" : "56px 0 0 0")};
+  position: relative;
+  height: auto;
+  display: flex;
+  align-items: center;
+  & > .nav-element {
+    padding: 0 20px;
+  }
+  & > .swiper {
+    z-index: 4;
+  }
+  .swiper-button.swiper-button-disabled {
+    opacity: 0;
+  }
+  @media (max-width: 1440px) and (min-width: 799px) and (max-height: 790px) {
+    margin: 0;
+  }
+  @media (max-width: 1024px) {
     height: 100%;
-    padding-bottom: 0px;
-    & > span {
-      font-size: 16px;
+    margin: 0;
+  }
+  @media (max-width: 799px) {
+    padding-top: 20px;
+    & > .nav-element {
+      display: none;
     }
-    & > p {
-      font-size: 14px;
+    & > .swiper {
+      height: 100%;
+    }
+    margin: 0;
+    & > .swiper-wrapper {
+      min-height: 100%;
     }
   }
 `;
-const NavBlock = styled("div")`
-  z-index: 1200;
-  position: absolute;
-  top: calc(530px);
-  left: 80px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  & > #items-nav {
-    display: flex;
-    gap: 20px;
+const NavEL = styled.div`
+  & > svg {
+    width: 40px;
+    height: 40px;
   }
-  @media (max-height: 790px) {
-    top: calc(530px - 60px);
+`;
+
+const SwiperSlideWrapper = styled(SwiperSlide)`
+  height: 135px;
+  width: 400px;
+  padding-right: 25px;
+  z-index: 4;
+  & > span {
+    color: var(--brand-color-blue);
+    font-family: var(--brand-font-secondary);
+    font-size: 25px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 120%;
+    text-transform: uppercase;
   }
-  @media (max-width: 1440px) and (min-width: 768px) and (max-height: 790px) {
-    top: calc(530px - 100px);
+  & > p {
+    color: var(--brand-color-black-blue);
+    font-family: "PT Sans";
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%;
   }
-  @media (max-width: 1024px) {
-    top: calc(100% - 64px);
-  }
-  @media (max-width: 1024px) {
-    top: calc(100% - 64px);
-    left: 20px;
-    gap: 10px;
-    & > #items-nav {
-      display: flex;
-      gap: 10px;
+  @media (max-width: 799px) {
+    width: 30%;
+    height: 100%;
+    & > span {
+      font-size: 16px;
+    }
+    & > p {
+      font-size: 14px;
     }
   }
 `;

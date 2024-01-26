@@ -44,3 +44,8 @@ export interface NavIconProps {
   fill?: string;
   id?: string;
 }
+export interface EventSwiperProps {
+  events: Event[];
+  activeIndex: number;
+  onResize: () => void;
+}
