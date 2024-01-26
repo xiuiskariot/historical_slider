@@ -17,8 +17,9 @@ import "swiper/css/pagination";
 import { ItemsSwiperProps } from "../../types";
 
 import EventSwiper from "./EventSwiper";
-import NavIcon from "icons/NavIcon";
+
 import { useDebounce } from "hooks/useDebounce";
+import NavIcon from "components/icons/NavIcon";
 
 const ItemsSwiper: FC<ItemsSwiperProps> = (props) => {
   const { items, handleActiveChange, activeIndex, onResize } = props;

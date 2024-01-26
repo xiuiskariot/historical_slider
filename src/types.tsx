@@ -49,3 +49,15 @@ export interface EventSwiperProps {
   activeIndex: number;
   onResize: () => void;
 }
+
+export interface DateSummaryProps {
+  dataset: Item[];
+  timeline: gsap.core.Timeline;
+  activeIndex: number;
+}
+
+export type YearSpanProp = {
+  timeline: gsap.core.Timeline | null | undefined;
+  year: number;
+  secondary?: boolean;
+};

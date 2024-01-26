@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import useMediaQuery from "./hooks/useMediaQuery";
 
-import CircularList from "./CircularList";
+import CircularList from "./components/mainCircle/CircularList";
 import { itemsInitial as dataset } from "./assets/dataset";
 
 const Wrapper = styled.div<{

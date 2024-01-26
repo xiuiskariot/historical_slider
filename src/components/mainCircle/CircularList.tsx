@@ -6,14 +6,15 @@ import MotionPathPlugin from "gsap/MotionPathPlugin";
 
 import styled from "styled-components";
 
-import useMediaQuery from "../src/hooks/useMediaQuery";
+import useMediaQuery from "../../hooks/useMediaQuery";
 
 import { CircularItem } from "./CircularItem";
-// import DateSummary from "./summaries/DateSummary";
 
-// import EventSwiper from "./swipers/EventSwiper";
-// import ItemsNavigation from "./navigation/ItemsNavigation";
+
 import { CircularListProps } from "types";
+import DateSummary from "../summaries/Datesummary";
+import ItemsNavigation from "../navigation/ItemsNavigation";
+import EventSwiper from "../swipers/EventSwiper";
 
 const CircularList = ({ dataset }: CircularListProps) => {
   gsap.registerPlugin(MotionPathPlugin);
@@ -268,7 +269,7 @@ const CircularList = ({ dataset }: CircularListProps) => {
           </svg>
         </WrapperMain>
       )}
-      {/* <DateSummary
+      <DateSummary
         dataset={dataset}
         activeIndex={activeIndex}
         timeline={tl.current || gsap.timeline()}
@@ -284,7 +285,7 @@ const CircularList = ({ dataset }: CircularListProps) => {
         onResize={() => {
           setIsResize(true);
         }}
-      /> */}
+      />
     </Container>
   );
 };

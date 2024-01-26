@@ -1,15 +1,16 @@
 import React, { FC, useRef } from "react";
 import styled from "styled-components";
 
-import { Swiper, SwiperClass, SwiperRef, SwiperSlide } from "swiper/swiper-react";
-import { Navigation, Pagination } from "swiper/types/modules";
+import { Swiper, SwiperClass, SwiperRef, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
 import useMediaQuery from "../../hooks/useMediaQuery";
 import { EventSwiperProps } from "../../types";
-import NavIcon from "icons/NavIcon";
+import NavIcon from "../icons/NavIcon";
+
 
 const EventSwiper: FC<EventSwiperProps> = ({
   activeIndex,
